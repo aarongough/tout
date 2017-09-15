@@ -10,6 +10,14 @@ class NormalClass
   def private_foo
     "private"
   end
+
+  class << self
+    private
+
+    def private_class_foo
+      "private class"
+    end
+  end
 end
 
 RSpec.describe Tout do
@@ -24,6 +32,14 @@ RSpec.describe Tout do
 
       it "makes the method public" do
         expect(NormalClass.new.private_foo).to eq("private")
+      end
+    end
+
+    context "for a private class method" do
+      publicize(NormalClass, :private_class_foo)
+
+      it "makes the class method public" do
+        expect(NormalClass.private_class_foo).to eq("private class")
       end
     end
 
