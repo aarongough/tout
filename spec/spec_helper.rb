@@ -12,6 +12,6 @@ RSpec.configure do |config|
   config.extend(Tout)
 
   config.before(:suite) do
-    puts "\nPlease note: This test suite is supposed to have one passing spec and two failing specs."
+    puts "\nPlease note: This test suite is supposed to have two passing specs and three failing specs."
   end
 end

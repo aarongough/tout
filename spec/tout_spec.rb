@@ -12,6 +12,10 @@ class NormalClass
   end
 
   class << self
+    def public_class_foo
+      "public class"
+    end
+
     private
 
     def private_class_foo
@@ -25,6 +29,7 @@ RSpec.describe Tout do
 
     after(:all) do
       raise "Method privacy was not restored" if NormalClass.method_defined?(:private_foo)
+      raise "Class method privacy was not restored" if NormalClass.method_defined?(:private_class_foo)
     end
 
     context "for a private method" do
@@ -35,6 +40,14 @@ RSpec.describe Tout do
       end
     end
 
+    context "raises an error when given a public method" do
+      publicize(NormalClass, :public_foo)
+
+      it "raises an error" do
+        flunk
+      end
+    end
+
     context "for a private class method" do
       publicize(NormalClass, :private_class_foo)
 
@@ -42,9 +55,9 @@ RSpec.describe Tout do
         expect(NormalClass.private_class_foo).to eq("private class")
       end
     end
-
-    context "raises an error when given a public method" do
-      publicize(NormalClass, :public_foo)
+    
+    context "raises an error when given a public class method" do
+      publicize(NormalClass, :public_class_foo)
 
       it "raises an error" do
         flunk
